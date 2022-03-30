@@ -1,0 +1,60 @@
+use Agenda
+CREATE TABLE Contacto(
+Id_contacto INT NOT NULL IDENTITY PRIMARY KEY,
+ Codigo AS ('U'+RIGHT('00'+CONVERT(VARCHAR,Id_contacto),(2))),
+ Nombre nvarchar(30) not null,
+ Apellido nvarchar(30) null,
+ Fecha_Nacimiento date null,
+ Celular decimal(12,0)   not null
+
+)
+
+select * from Contacto;
+insert into Contacto values ('Reisher','Mella','1000-01-01',809999);
+
+
+--procedimientos agrupados
+
+
+
+
+--Procedimiento de agregar
+
+go
+Create procedure Stored_InsertarContacto
+@Nombre nvarchar(30),
+@Apellido nvarchar(30),
+@Fecha_Nacimiento date,
+@Celular int
+as
+insert into Contacto values (@Nombre,@Apellido,@Fecha_Nacimiento,@Celular);
+
+
+
+
+go
+--Procedimiento para buscar
+Create procedure Stored_BuscarContacto
+@Buscar nvarchar(20)
+as
+Select * from Contacto where Nombre like @Buscar + '%'
+
+
+--Procedimiento para editar
+go
+Create procedure Stored_EditarContacto
+@idcontacto int,
+@Nombre nvarchar (30),
+@Apellido nvarchar (30),
+@Fecha_Nacimiento date,
+@Celular int
+
+as
+update Contacto set Nombre = @Nombre, Apellido = @Apellido, Fecha_Nacimiento = @Fecha_Nacimiento, Celular = @Celular where Id_contacto = @idcontacto
+
+go
+create procedure Stored_BorrarContacto
+@idcontacto int
+as
+Delete Contacto where Id_contacto = @idcontacto
+
